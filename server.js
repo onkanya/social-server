@@ -27,9 +27,16 @@ app.get("/", (req, res) => {
     version: "0.1-beta"
   });
 });
-app.get("/messages", async(req, res) => {
-  // select * from message
-  let messages = await Message.find({});
+app.get("/messages", async (req, res) => {
+  // SELECT * FROM messages
+  let messages = await Message.aggregate({
+    $lookup: {
+      from: "users",
+      localField: "userId",
+      foreignField: "_id",
+      as: "user_profile"
+    }
+  });
   res.json(messages);
 });
 
