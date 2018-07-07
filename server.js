@@ -5,8 +5,7 @@ import logger from "morgan";
 import { auth, message, user } from "./app/routers";
 import passport from "./app/passport";
 import Message from "./app/schema/Message";
-
-//run db connect
+//run db connect'
 import "./app/core/connect";
 
 const app = express();
@@ -27,18 +26,13 @@ app.get("/", (req, res) => {
     version: "0.1-beta"
   });
 });
-app.get("/messages", async (req, res) => {
-  // SELECT * FROM messages
-  let messages = await Message.aggregate({
-    $lookup: {
-      from: "users",
-      localField: "userId",
-      foreignField: "_id",
-      as: "user_profile"
-    }
-  });
+
+app.get('/messages', async(req,res) => {
+  // SELECT * FROM Message
+  let messages = await Message.find({});
   res.json(messages);
-});
+
+})
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}!`));
